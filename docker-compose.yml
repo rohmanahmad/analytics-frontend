@@ -1,0 +1,31 @@
+version: "3.7"
+networks:
+  malangsoftware_network:
+    external: true
+services:
+# NGINX FOR FRONTEND
+  nginx_server:
+    image: nginx:alpine
+    volumes:
+      # main files per project
+      - ./frontend/builds/office_malangsoftware:/var/www/html/office
+      - ./frontend/builds/accounts:/var/www/html/accounts
+      # all assets
+      - ./frontend/builds/index.html:/var/www/html/index.html
+      - ./public:/var/www/html/public
+      # nginx configurations
+      - ./nginx/office.conf:/etc/nginx/conf.d/office.conf
+      - ./nginx/accounts.conf:/etc/nginx/conf.d/accounts.conf
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    networks:
+      - malangsoftware_network
+    command: [apt, 'install', 'curl']
+    command: [nginx-debug, '-g', 'daemon off;']
+    # links:
+    #   - malangsoftware_api
+# NODEJS FOR APIs
+  
+# MONGODB FOR APIs
+  
